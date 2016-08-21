@@ -1,6 +1,8 @@
 # ttock
 **ttock** is a simple browser-based stopwatch/timer utility.
 
+![ttock screenshot](screenshot.png?raw=true "ttock screenshot")
+
 It is released under the GPLv3.
 
 ## Purpose
