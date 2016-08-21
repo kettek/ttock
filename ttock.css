@@ -1,0 +1,141 @@
+* { box-sizing: border-box; }
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  text-align: center;
+  background-color: #111;
+  color: #eee;
+  vertical-align: middle;
+  font-family: 'Varela Round', sans-serif;
+}
+
+#display {
+  display: block;
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  box-sizing: border-box;
+  width: 100vmin;
+  height: 100vmin;
+  margin: auto;
+}
+
+#timer_input {
+  position: absolute;
+  top: 20%;
+  left: 0;
+  right: 0;
+  margin: auto;
+  font-size: 6vmin;
+  font-family: 'Varela Round', sans-serif;
+  width: 50%;
+  text-align: center;
+  color: #ccc;
+  background-color: #222;
+  margin-bottom: 5vmin;
+  border-radius: 2vmin;
+  border: 0;
+}
+
+#timer {
+  overflow: hidden;
+  position: relative;
+  margin: auto;
+  width: 99vmin;
+  height: 99vmin;
+  text-align: center;
+  line-height: 99vmin;
+  vertical-align: middle;
+  border-radius: 100vmin;
+  font-size: 14vmin;
+  font-family: 'Varela Round', sans-serif;
+  background-color: #000;
+  color: #ddd;
+  border: 1vmin outset #fff;
+  cursor: pointer;
+  transition: box-shadow 0.25s linear;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;           /* Non-prefixed version, currently
+                                  not supported by any browser */
+}
+#timer:active {
+  border: 1vmin groove #fff;
+  border-style: inset;
+}
+
+#timer_text {
+  width: 75%;
+  text-align: center;
+  color: #ccc;
+  padding: 2vmin 8vmin 2vmin 8vmin;
+  background-color: #111;
+
+  border-radius: 2vmin;
+}
+
+#timer_info {
+  position: absolute;
+  top: 38%;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 50%;
+  text-align: center;
+
+  font-family: 'Righteous', cursive;
+  font-size: 4vmin;
+
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;           /* Non-prefixed version, currently
+                                  not supported by any browser */
+}
+#timer_title {
+  position: absolute;
+  bottom: 40%;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 50%;
+  text-align: center;
+
+  font-family: 'Righteous', cursive;
+  font-size: 5vmin;
+
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;           /* Non-prefixed version, currently
+                                  not supported by any browser */
+}
+
+#timer_total {
+  position: absolute;
+  top: 22%;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 50%;
+  text-align: center;
+
+  font-size: 8vmin;
+  font-family: 'Varela Round', sans-serif;
+
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;           /* Non-prefixed version, currently
+                                  not supported by any browser */
+
+}
