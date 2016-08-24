@@ -5,6 +5,10 @@ ktk.ttock = (function() {
   var ele_display = null;
   var ele_timer   = null;
   var ele_timer_input = null;
+  var ele_timer_h = null;
+  var ele_timer_m = null;
+  var ele_timer_s = null;
+  var ele_timer_ms = null;
   var ele_timer_total = null;
   // logic control
   var is_touch    = false;
@@ -12,8 +16,8 @@ ktk.ttock = (function() {
   var has_played  = false;
   var start_time  = null;
   var last_time   = null;
-  var target_time = 45.000;          // target time in seconds
-  var total_time  = 0.000;
+  var target_time = 4500;          // target time in ms
+  var total_time  = 0;
   var pause_start = 0;
   var timer       = null;           // setInterval timer
   var press_time  = 0;
@@ -27,7 +31,11 @@ ktk.ttock = (function() {
     ele_timer_text = document.getElementById('timer_text');
     ele_timer_total = document.getElementById('timer_total');
     ele_timer_input = document.getElementById('timer_input');
-    target_time = Number(document.getElementById('timer_input').value);
+    ele_timer_input_h = document.getElementById('h_input');
+    ele_timer_input_m = document.getElementById('m_input');
+    ele_timer_input_s = document.getElementById('s_input');
+    ele_timer_input_ms = document.getElementById('ms_input');
+    setTimer(new Event(null));
     document.body.addEventListener('keydown', onKeyDown, true);
     document.body.addEventListener('keyup', onKeyUp, true);
     ele_timer.addEventListener('mousedown', onMouseDown, true);
@@ -39,12 +47,15 @@ ktk.ttock = (function() {
         ele_timer.addEventListener('touchend', onTouchUp, true);
       }
     }, true);
-    ele_timer_input.addEventListener('change', setTimer, false);
+    ele_timer_input_h.addEventListener('change', setTimer, false);
+    ele_timer_input_m.addEventListener('change', setTimer, false);
+    ele_timer_input_s.addEventListener('change', setTimer, false);
+    ele_timer_input_ms.addEventListener('change', setTimer, false);
   };
   function onStop() {
-    total_time += (last_time - start_time)/1000;
+    total_time += (last_time - start_time);
     pause_start = start_time = last_time = 0;
-    ele_timer_text.innerText = '0.000';
+    ele_timer_text.innerText = convertTime(0);
     ele_timer.style.boxShadow = "0 0 0vmin #0080FF";
     updateColor();
     if (is_paused) return;
@@ -78,9 +89,9 @@ ktk.ttock = (function() {
   function onTick() {
     if (is_paused) return;
     last_time = getTime();
-    var elapsed = ((last_time - start_time)/1000);
-    ele_timer_text.innerText = elapsed.toFixed(3);
-    ele_timer_total.innerText = (total_time+elapsed).toFixed(3);
+    var elapsed = ((last_time - start_time));
+    ele_timer_text.innerText = convertTime(elapsed);
+    ele_timer_total.innerText = convertTime(total_time+elapsed);
     if (elapsed >= target_time) {
       if (!has_played) onDing();
       ele_timer.style.boxShadow = "0 0 4vmin #0080FF";
@@ -88,7 +99,7 @@ ktk.ttock = (function() {
     updateColor();
   };
   function updateColor() {
-    var delta = ((last_time - start_time)/1000).toFixed(3);
+    var delta = ((last_time - start_time));
     var ratio = Math.min(delta / target_time, 1.0);
     var r = Math.floor(200 * ratio);
     var g = Math.floor(25 * ratio);
@@ -101,7 +112,8 @@ ktk.ttock = (function() {
   };
   function setTimer(evt) {
     evt.preventDefault();
-    target_time = Number(evt.target.value);
+    target_time = Number(ele_timer_input_h.value*60*60*1000) + Number(ele_timer_input_m.value*60*1000) + Number(ele_timer_input_s.value*1000) + Number(ele_timer_input_ms.value);
+    console.log(target_time);
     return false;
   };
   function onKeyDown(evt) {
@@ -119,34 +131,48 @@ ktk.ttock = (function() {
     }
   };
   function onTouchDown(evt) {
-    if (evt.target == ele_timer_input) return;
+    if (evt.target.parentElement == ele_timer_input) return;
     evt.preventDefault();
     onMouseDown(evt);
   };
   function onTouchUp(evt) {
-    if (evt.target == ele_timer_input) return;
+    if (evt.target.parentElement == ele_timer_input) return;
     evt.preventDefault();
     onMouseUp(evt);
   };
   function onMouseDown(evt) {
-    if (evt.target == ele_timer_input) return;
+    if (evt.target.parentElement == ele_timer_input) return;
     press_time = getTime();
   };
   function onMouseUp(evt) {
-    if (evt.target == ele_timer_input) return;
+    if (evt.target.parentElement == ele_timer_input) return;
     var delta = getTime() - press_time;
     if (delta > 750) {
-      total_time = 0.000;
-      ele_timer_total.innerText = '0.000';
+      total_time = 0;
+      ele_timer_total.innerText = convertTime(0);
       onStop();
       has_played = false;
     } else if (delta > 200) {
       onStop();
       has_played = false;
-      ele_timer_total.innerText = total_time.toFixed(3);
+      ele_timer_total.innerText = convertTime(total_time);
     } else {
       onToggle();
     }
+  };
+  function convertTime(ms) {
+    var s = ms/1000;
+    var m = s/60;
+    var h = m/60;
+    var rms = Math.floor(ms % 1000);
+    rms = rms < 100 ? rms < 10 ? '00'+rms : '0'+rms : rms;
+    var rs = Math.floor(s % 60);
+    rs = rs < 10 ? '0'+rs : rs;
+    var rm = Math.floor(m % 60);
+    rm = rm < 10 ? '0'+rm : rm;
+    var rh = Math.floor(h % 60);
+    rh = rh < 10 ? '0'+rh : rh;
+    return rh+":"+rm+":"+rs+"."+rms;
   };
   return {
     gogogo: function() {
