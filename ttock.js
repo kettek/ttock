@@ -113,7 +113,10 @@ ktk.ttock = (function() {
   function setTimer(evt) {
     evt.preventDefault();
     target_time = Number(ele_timer_input_h.value*60*60*1000) + Number(ele_timer_input_m.value*60*1000) + Number(ele_timer_input_s.value*1000) + Number(ele_timer_input_ms.value);
-    console.log(target_time);
+    if (target_time > (last_time - start_time)) {
+      has_played = false;
+      ele_timer.style.boxShadow = "0 0 0vmin #0080FF";
+    }
     return false;
   };
   function onKeyDown(evt) {
