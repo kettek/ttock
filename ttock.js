@@ -56,7 +56,6 @@ ktk.ttock = (function() {
     ele_timer_input_m.addEventListener('change', setTimer, false);
     ele_timer_input_s.addEventListener('change', setTimer, false);
     ele_timer_input_ms.addEventListener('change', setTimer, false);
-    onShow();
   };
   function onStop() {
     total_time += (last_time - start_time);
