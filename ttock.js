@@ -22,6 +22,11 @@ ktk.ttock = (function() {
   var timer       = null;           // setInterval timer
   var press_time  = 0;
   var key_held    = false;          // 'spacebar' held boolean
+  var use_hpt     = (typeof performance !== 'undefined');
+  // FIXME: forcible disable hpt on mobile. should use 'pageshow' and 'pagehide' to change the type of timer used.
+  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
+    use_hpt       = false;
+  }
   // audio
   var audio_ctx = new AudioContext();
   // methods
@@ -51,6 +56,7 @@ ktk.ttock = (function() {
     ele_timer_input_m.addEventListener('change', setTimer, false);
     ele_timer_input_s.addEventListener('change', setTimer, false);
     ele_timer_input_ms.addEventListener('change', setTimer, false);
+    onShow();
   };
   function onStop() {
     total_time += (last_time - start_time);
@@ -107,8 +113,11 @@ ktk.ttock = (function() {
     ele_timer.style.backgroundColor = 'rgb('+r+','+g+','+b+')';
   };
   function getTime() {
-    if (typeof performance !== 'undefined') return performance.now();
-    else return new Date();
+    if (use_hpt) {
+      return performance.now();
+    } else { 
+      return new Date();
+    }
   };
   function setTimer(evt) {
     evt.preventDefault();
