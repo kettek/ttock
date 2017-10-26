@@ -56,6 +56,10 @@ ktk.ttock = (function() {
     ele_timer_input_m.addEventListener('change', setTimer, false);
     ele_timer_input_s.addEventListener('change', setTimer, false);
     ele_timer_input_ms.addEventListener('change', setTimer, false);
+    ele_timer_input_h.addEventListener('keyup', checkFocus, false);
+    ele_timer_input_m.addEventListener('keyup', checkFocus, false);
+    ele_timer_input_s.addEventListener('keyup', checkFocus, false);
+    ele_timer_input_ms.addEventListener('keyup', checkFocus, false);
   };
   function onStop() {
     total_time += (last_time - start_time);
@@ -125,10 +129,11 @@ ktk.ttock = (function() {
       has_played = false;
       ele_timer.style.boxShadow = "0 0 0vmin #0080FF";
     }
-    // Defocus input elements
-    if (evt.target) evt.target.blur();
     return false;
   };
+  function checkFocus(evt) {
+    if (evt.which === 13) evt.target.blur();
+  }
   function onKeyDown(evt) {
     if (evt.which == 32 && !key_held) {
       evt.target = ele_timer;
