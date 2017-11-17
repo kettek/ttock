@@ -48,11 +48,9 @@ html, body {
 #timer {
   overflow: hidden;
   position: relative;
-  margin: auto;
-  width: 99%;
-  height: 99%;
-  width: 99vmin;
-  height: 99vmin;
+  margin: 1%; margin: 1vmin;
+  width: 98%; height: 98%;
+  width: 98vmin; height: 98vmin;
   text-align: center;
   line-height: 99vmin;
   vertical-align: middle;
