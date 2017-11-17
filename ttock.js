@@ -28,7 +28,10 @@ ktk.ttock = (function() {
     use_hpt       = false;
   }
   // audio
-  var audio_ctx = new AudioContext();
+  var audio_ctx;
+  if (window.AudioContext || window.webkitAudioContext) {
+    audio_ctx = new window.AudioContext || window.webkitAudioContext;
+  }
   // methods
   function onInit() {
     ele_display = document.getElementById('display');
@@ -40,7 +43,8 @@ ktk.ttock = (function() {
     ele_timer_input_m = document.getElementById('m_input');
     ele_timer_input_s = document.getElementById('s_input');
     ele_timer_input_ms = document.getElementById('ms_input');
-    setTimer(new Event(null));
+    // Use old-style event creation for backward support
+    setTimer(document.createEvent('Event'));
     document.body.addEventListener('keydown', onKeyDown, true);
     document.body.addEventListener('keyup', onKeyUp, true);
     ele_timer.addEventListener('mousedown', onMouseDown, true);
@@ -86,14 +90,13 @@ ktk.ttock = (function() {
   };
   function onDing() {
     has_played = true;
-    var oscillator = audio_ctx.createOscillator();
-    oscillator.type = "triangle";
-    oscillator.connect(audio_ctx.destination);
-
-    oscillator.start(0);
-    setTimeout(function() {
-      oscillator.stop();
-    }, 250);
+    if (audio_ctx) {
+      var oscillator = audio_ctx.createOscillator();
+      oscillator.type = "triangle";
+      oscillator.connect(audio_ctx.destination);
+      oscillator.start(audio_ctx.currentTime);
+      oscillator.stop(audio_ctx.currentTime + 0.250);
+    }
   };
   function onTick() {
     if (is_paused) return;
