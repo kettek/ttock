@@ -68,9 +68,11 @@ ktk.ttock = (function() {
   function onStop() {
     total_time += (last_time - start_time);
     pause_start = start_time = last_time = 0;
-    ele_timer_text.innerText = convertTime(0);
+    var time = formatTime(convertTime(0));
+    ele_timer_text.innerText = time.h+':'+time.m+':'+time.s+'.'+time.ms;
     ele_timer.style.boxShadow = "0 0 0vmin #0080FF";
     updateColor();
+    updateTitle();
     if (is_paused) return;
     clearInterval(timer);
     timer = null;
@@ -102,13 +104,16 @@ ktk.ttock = (function() {
     if (is_paused) return;
     last_time = getTime();
     var elapsed = ((last_time - start_time));
-    ele_timer_text.innerText = convertTime(elapsed);
-    ele_timer_total.innerText = convertTime(total_time+elapsed);
+    var time = formatTime(convertTime(elapsed));
+    ele_timer_text.innerText = time.h+':'+time.m+':'+time.s+'.'+time.ms;
+    var time_total = formatTime(convertTime(total_time+elapsed));
+    ele_timer_total.innerText = time_total.h+':'+time_total.m+':'+time_total.s+'.'+time_total.ms;
     if (elapsed >= target_time) {
       if (!has_played) onDing();
       ele_timer.style.boxShadow = "0 0 4vmin #0080FF";
     }
     updateColor();
+    updateTitle();
   };
   function updateColor() {
     var delta = ((last_time - start_time));
@@ -117,6 +122,13 @@ ktk.ttock = (function() {
     var g = Math.floor(25 * ratio);
     var b = Math.floor(200 * ratio);
     ele_timer.style.backgroundColor = 'rgb('+r+','+g+','+b+')';
+  };
+  function updateTitle() {
+    var t_elapsed = convertTime(last_time - start_time);
+    var t_target = convertTime(target_time);
+    var elapsed_str = (t_target.h ? t_elapsed.h+'h' : '') + (t_target.m ? t_elapsed.m+'m' : '') + (t_target.s ? t_elapsed.s+'s' : '');
+    var target_str = (t_target.h ? t_target.h+'h' : '') + (t_target.m ? t_target.m+'m' : '') + (t_target.s ? t_target.s+'s' : '');
+    document.title = elapsed_str + '/' + target_str + ' - ttock';
   };
   function getTime() {
     if (use_hpt) {
@@ -170,13 +182,15 @@ ktk.ttock = (function() {
     var delta = getTime() - press_time;
     if (delta > 750) {
       total_time = 0;
-      ele_timer_total.innerText = convertTime(0);
+      var time = formatTime(convertTime(0));
+      ele_timer_total.innerText = time.h+':'+time.m+':'+time.s+'.'+time.ms;
       onStop();
       has_played = false;
     } else if (delta > 200) {
       onStop();
       has_played = false;
-      ele_timer_total.innerText = convertTime(total_time);
+      var time = formatTime(convertTime(total_time));
+      ele_timer_total.innerText = time.h+':'+time.m+':'+time.s+'.'+time.ms;
     } else {
       onToggle();
     }
@@ -186,14 +200,17 @@ ktk.ttock = (function() {
     var m = s/60;
     var h = m/60;
     var rms = Math.floor(ms % 1000);
-    rms = rms < 100 ? rms < 10 ? '00'+rms : '0'+rms : rms;
     var rs = Math.floor(s % 60);
-    rs = rs < 10 ? '0'+rs : rs;
     var rm = Math.floor(m % 60);
-    rm = rm < 10 ? '0'+rm : rm;
     var rh = Math.floor(h % 60);
-    rh = rh < 10 ? '0'+rh : rh;
-    return rh+":"+rm+":"+rs+"."+rms;
+    return {h: rh, m: rm, s: rs, ms: rms};
+  };
+  function formatTime(time) {
+    time.ms = time.ms < 100 ? time.ms < 10 ? '00'+time.ms : '0'+time.ms : time.ms;
+    time.s = time.s < 10 ? '0'+time.s : time.s;
+    time.m = time.m < 10 ? '0'+time.m : time.m;
+    time.h = time.h < 10 ? '0'+time.h : time.h;
+    return time;
   };
   return {
     gogogo: function() {
