@@ -10,6 +10,7 @@ ktk.ttock = (function() {
   var ele_timer_s = null;
   var ele_timer_ms = null;
   var ele_timer_total = null;
+  var ele_favicon = null;
   // logic control
   var is_touch    = false;
   var is_paused   = true;
@@ -43,6 +44,7 @@ ktk.ttock = (function() {
     ele_timer_input_m = document.getElementById('m_input');
     ele_timer_input_s = document.getElementById('s_input');
     ele_timer_input_ms = document.getElementById('ms_input');
+    ele_favicon = document.getElementById('favicon');
     // Use old-style event creation for backward support
     setTimer(document.createEvent('Event'));
     document.body.addEventListener('keydown', onKeyDown, true);
@@ -111,6 +113,9 @@ ktk.ttock = (function() {
     if (elapsed >= target_time) {
       if (!has_played) onDing();
       ele_timer.style.boxShadow = "0 0 4vmin #0080FF";
+      ele_favicon.href = 'alarm.ico';
+    } else {
+      ele_favicon.href = 'ttock.ico';
     }
     updateColor();
     updateTitle();
@@ -124,7 +129,8 @@ ktk.ttock = (function() {
     ele_timer.style.backgroundColor = 'rgb('+r+','+g+','+b+')';
   };
   function updateTitle() {
-    var t_elapsed = convertTime(last_time - start_time);
+    var elapsed = last_time - start_time;
+    var t_elapsed = convertTime(elapsed);
     var t_target = convertTime(target_time);
     var elapsed_str = (t_target.h ? t_elapsed.h+'h' : '') + (t_target.m ? t_elapsed.m+'m' : '') + (t_target.s ? t_elapsed.s+'s' : '');
     var target_str = (t_target.h ? t_target.h+'h' : '') + (t_target.m ? t_target.m+'m' : '') + (t_target.s ? t_target.s+'s' : '');
