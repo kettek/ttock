@@ -151,6 +151,7 @@ ktk.ttock = (function() {
       has_played = false;
       ele_timer.style.boxShadow = "0 0 0vmin #0080FF";
     }
+    updateTitle();
     return false;
   };
   function checkFocus(evt) {
