@@ -66,6 +66,7 @@ ktk.ttock = (function() {
     ele_timer_input_m.addEventListener('keyup', checkFocus, false);
     ele_timer_input_s.addEventListener('keyup', checkFocus, false);
     ele_timer_input_ms.addEventListener('keyup', checkFocus, false);
+    updateTitle();
   };
   function onStop() {
     total_time += (last_time - start_time);
