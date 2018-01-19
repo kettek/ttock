@@ -33,9 +33,9 @@ html, body {
 
 #timer_input input {
   font-family: 'Varela Round', sans-serif;
-  font-size: 6vmin;
+  font-size: 5vmin;
   text-align: center;
-  width: 2em;
+  width: 3em;
   color: #ccc;
   background-color: #222;
   border-radius: 2vmin;
