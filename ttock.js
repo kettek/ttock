@@ -21,6 +21,9 @@ ktk.ttock = (function() {
   var total_time  = 0;
   var pause_start = 0;
   var timer       = null;           // setInterval timer
+  var frame_fast  = 1;
+  var frame_slow  = 100;
+  var frame_time  = frame_fast;
   var press_time  = 0;
   var key_held    = false;          // 'spacebar' held boolean
   var use_hpt     = (typeof performance !== 'undefined');
@@ -84,7 +87,7 @@ ktk.ttock = (function() {
   function onToggle() {
     if (is_paused) {
       start_time -= pause_start - getTime();
-      timer = setInterval(onTick, 1);
+      timer = setInterval(onTick, frame_time);
       is_paused = false;
     } else {
       clearInterval(timer);
@@ -169,6 +172,16 @@ ktk.ttock = (function() {
       evt.target = ele_timer;
       onMouseUp(evt);
       key_held = false;
+    } else if (evt.which == 83) { // 's' = slow mode
+      if (frame_time == frame_fast) {
+        frame_time = frame_slow;
+      } else {
+        frame_time = frame_fast;
+      }
+      if (timer) {
+        clearInterval(timer)
+        timer = setInterval(onTick, frame_time);
+      }
     }
   };
   function onTouchDown(evt) {
