@@ -11,6 +11,7 @@ ktk.ttock = (function() {
   var ele_timer_ms = null;
   var ele_timer_total = null;
   var ele_favicon = null;
+  var ele_speed_input = null;
   // logic control
   var is_touch    = false;
   var is_paused   = true;
@@ -48,6 +49,7 @@ ktk.ttock = (function() {
     ele_timer_input_s = document.getElementById('s_input');
     ele_timer_input_ms = document.getElementById('ms_input');
     ele_favicon = document.getElementById('favicon');
+    ele_speed_input = document.getElementById('ctl_speed_input');
     // Use old-style event creation for backward support
     setTimer(document.createEvent('Event'));
     document.body.addEventListener('keydown', onKeyDown, true);
@@ -69,6 +71,9 @@ ktk.ttock = (function() {
     ele_timer_input_m.addEventListener('keyup', checkFocus, false);
     ele_timer_input_s.addEventListener('keyup', checkFocus, false);
     ele_timer_input_ms.addEventListener('keyup', checkFocus, false);
+    ele_speed_input.addEventListener('change', function(e) {
+      toggleSlow(e.target.checked)
+    }, false);
     updateTitle();
   };
   function onStop() {
@@ -173,15 +178,7 @@ ktk.ttock = (function() {
       onMouseUp(evt);
       key_held = false;
     } else if (evt.which == 83) { // 's' = slow mode
-      if (frame_time == frame_fast) {
-        frame_time = frame_slow;
-      } else {
-        frame_time = frame_fast;
-      }
-      if (timer) {
-        clearInterval(timer)
-        timer = setInterval(onTick, frame_time);
-      }
+      toggleSlow(frame_time == frame_fast ? true : false)
     }
   };
   function onTouchDown(evt) {
@@ -216,6 +213,18 @@ ktk.ttock = (function() {
       onToggle();
     }
   };
+  function toggleSlow(bool) {
+    if (bool) {
+      frame_time = frame_slow;
+    } else {
+      frame_time = frame_fast;
+    }
+    if (timer) {
+      clearInterval(timer);
+      timer = setInterval(onTick, frame_time);
+    }
+    ele_speed_input.checked = bool;
+  }
   function convertTime(ms) {
     var s = ms/1000;
     var m = s/60;

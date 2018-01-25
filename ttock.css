@@ -148,3 +148,39 @@ html, body {
                                   not supported by any browser */
 
 }
+
+#ctl_speed {
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+  user-select: none;
+}
+#ctl_speed input {
+  position: relative;
+  width: 0; height: 0;
+  z-index: -9999;
+}
+#ctl_speed span {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  text-align: center;
+  vertical-align: middle;
+  margin: 5vmin;
+  background-color: rgba(128,255,128,0.25);
+  color: #111;
+  border-radius: 100vmin;
+  width: 10vmin; height: 10vmin;
+  line-height: 10vmin;
+
+  border: 16px outset #aaa;
+  border: 1vmin outset #aaa;
+}
+#ctl_speed input:checked + span {
+  background-color: rgba(128,255,128,0.8);
+
+  border: 16px outset #fff;
+  border: 1vmin outset #fff;
+}
