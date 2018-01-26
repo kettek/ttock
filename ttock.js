@@ -12,6 +12,7 @@ ktk.ttock = (function() {
   var ele_timer_total = null;
   var ele_favicon = null;
   var ele_speed_input = null;
+  var ele_timer_input_mode = null;
   // logic control
   var is_touch    = false;
   var is_paused   = true;
@@ -22,6 +23,8 @@ ktk.ttock = (function() {
   var total_time  = 0;
   var pause_start = 0;
   var timer       = null;           // setInterval timer
+  var MODE_CONTINOUS = 0, MODE_REPEAT = 1, MODE_STOP = 2;
+  var timer_mode  = MODE_CONTINOUS;
   var frame_fast  = 1;
   var frame_slow  = 100;
   var frame_time  = frame_fast;
@@ -48,6 +51,7 @@ ktk.ttock = (function() {
     ele_timer_input_m = document.getElementById('m_input');
     ele_timer_input_s = document.getElementById('s_input');
     ele_timer_input_ms = document.getElementById('ms_input');
+    ele_timer_input_mode = document.getElementById('mode_input');
     ele_favicon = document.getElementById('favicon');
     ele_speed_input = document.getElementById('ctl_speed_input');
     // Use old-style event creation for backward support
@@ -73,6 +77,18 @@ ktk.ttock = (function() {
     ele_timer_input_ms.addEventListener('keyup', checkFocus, false);
     ele_speed_input.addEventListener('change', function(e) {
       toggleSlow(e.target.checked)
+    }, false);
+    ele_timer_input_mode.addEventListener('click', function(e) {
+      if (e.target.name === 'continous') {
+        e.target.name = 'repeat';
+        timer_mode = MODE_REPEAT;
+      } else if (e.target.name === 'repeat') {
+        e.target.name = 'stop';
+        timer_mode = MODE_STOP;
+      } else if (e.target.name === 'stop') {
+        e.target.name = 'continous';
+        timer_mode = MODE_CONTINOUS;
+      }
     }, false);
     updateTitle();
   };
@@ -123,6 +139,13 @@ ktk.ttock = (function() {
       if (!has_played) onDing();
       ele_timer.style.boxShadow = "0 0 4vmin #0080FF";
       ele_favicon.href = 'alarm.ico';
+      if (timer_mode == MODE_STOP) {
+        onToggle();
+      } else if (timer_mode == MODE_REPEAT) {
+        has_played = false;
+        onStop();
+        onToggle();
+      }
     } else {
       ele_favicon.href = 'ttock.ico';
     }
@@ -210,6 +233,10 @@ ktk.ttock = (function() {
       var time = formatTime(convertTime(total_time));
       ele_timer_total.innerText = time.h+':'+time.m+':'+time.s+'.'+time.ms;
     } else {
+      if (timer_mode == MODE_STOP) {
+        onStop();
+        has_played = false;
+      }
       onToggle();
     }
   };

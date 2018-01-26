@@ -24,7 +24,7 @@ html, body {
 
 #timer_input {
   position: absolute;
-  top: -28%;
+  top: -27%;
   left: 0;
   right: 0;
   margin: auto;
@@ -33,16 +33,15 @@ html, body {
 
 #timer_input input {
   font-family: 'Varela Round', sans-serif;
-  font-size: 5vmin;
+  font-size: 4.5vmin;
   text-align: center;
-  width: 3em;
+  width: 11vmin;
+  height: 7vmin;
   color: #ccc;
   background-color: #222;
   border-radius: 2vmin;
   border: 0;
-}
-#timer_input #ms_input {
-  width: 2.5em;
+  vertical-align: middle;
 }
 
 #timer {
@@ -183,4 +182,22 @@ html, body {
 
   border: 16px outset #fff;
   border: 1vmin outset #fff;
+}
+
+input#mode_input {
+  width: 7vmin; height: 7vmin;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+  background-color: transparent;
+  cursor: pointer;
+}
+#mode_input[name="repeat"] {
+  background-image: url(icons/mode-repeat.svg);
+}
+#mode_input[name="continous"] {
+  background-image: url(icons/mode-continous.svg);
+}
+#mode_input[name="stop"] {
+  background-image: url(icons/mode-stop.svg);
 }
