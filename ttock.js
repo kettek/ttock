@@ -141,7 +141,7 @@ ktk.ttock = (function() {
     var elapsed = last_time - start_time;
     var t_elapsed = convertTime(elapsed);
     var t_target = convertTime(target_time);
-    var elapsed_str = (t_target.h ? t_elapsed.h+'h' : '') + (t_target.m ? t_elapsed.m+'m' : '') + (t_target.s ? t_elapsed.s+'s' : '');
+    var elapsed_str = (t_elapsed.h ? t_elapsed.h+'h' : '') + (t_elapsed.m ? t_elapsed.m+'m' : '') + (t_elapsed.s ? t_elapsed.s+'s' : t_target.s ? t_elapsed.s+'s' : '');
     var target_str = (t_target.h ? t_target.h+'h' : '') + (t_target.m ? t_target.m+'m' : '') + (t_target.s ? t_target.s+'s' : '');
     document.title = elapsed_str + '/' + target_str + ' - ttock';
   };
