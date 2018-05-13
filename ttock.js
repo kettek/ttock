@@ -186,6 +186,8 @@ ktk.ttock = (function() {
     return false;
   };
   function checkFocus(evt) {
+    // Oh hai Chrome 66
+    if (audio_ctx.state === 'suspended') audio_ctx.resume();
     if (evt.which === 13) evt.target.blur();
   }
   function onKeyDown(evt) {
